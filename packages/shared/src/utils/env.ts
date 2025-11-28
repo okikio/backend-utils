@@ -1,4 +1,4 @@
-// @filename: shared/runtime.ts
+// @filename: shared/src/utils/env.ts
 /**
  * Runtime detection utilities
  * Determines whether code is running in Deno or Node.js
