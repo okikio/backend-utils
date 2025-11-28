@@ -12,10 +12,10 @@
  * 2. `pull_list_items.follow_id` references this id (with ON DELETE SET NULL)
  */
 
-import type { EndpointDefinition } from '@platform/backend/server/types.ts'
+import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseQuerySchema, BaseParamSchema } from '@platform/backend/server/schemas.ts'
+import { BaseQuerySchema, BaseParamSchema } from '#shared/server/schemas.ts'
 import { z } from 'zod'
 
 // ============================================================================

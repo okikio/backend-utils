@@ -1,8 +1,8 @@
 // endpoint/likes/like/definition.ts
-import type { EndpointDefinition } from '@platform/backend/server/types.ts'
+import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseJsonSchema } from '@platform/backend/server/schemas.ts'
+import { BaseJsonSchema } from '#shared/server/schemas.ts'
 import { z } from 'zod'
 
 export const JsonSchema = z.object({

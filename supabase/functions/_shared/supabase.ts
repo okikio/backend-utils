@@ -1,8 +1,8 @@
-import type { Database } from '../../shared/src/types/index.ts'
+import type { Database } from '@platform/shared/types/index.ts'
 
 import { createClient } from '@supabase/supabase-js'
-import { getSupabaseConfig } from '../../shared/src/utils/config.ts'
-import { requireEnv } from '../../shared/src/utils/env.ts'
+import { getSupabaseConfig } from '@platform/shared/utils/config.ts'
+import { requireEnv } from '@platform/shared/utils/env.ts'
 
 export function createAdminClient() {
   const config = getSupabaseConfig({

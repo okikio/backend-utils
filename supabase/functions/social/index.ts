@@ -11,9 +11,9 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 
-import type { EndpointHandlerModule } from '@platform/backend/server/types.ts'
+import type { EndpointHandlerModule } from '#shared/server/types.ts'
 
-import { createApp } from '@platform/backend/server/create-app.ts'
+import { createApp } from '#shared/server/create-app.ts'
 
 // Import all endpoint handlers
 import * as CreateLikeHandler from './endpoints/likes/like/handler.ts'

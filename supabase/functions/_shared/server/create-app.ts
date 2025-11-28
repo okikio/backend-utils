@@ -28,7 +28,7 @@ import { requestId, type RequestIdVariables } from 'hono/request-id'
 import { secureHeaders, type SecureHeadersVariables } from 'hono/secure-headers'
 import { correlationMiddleware, getLogger, type CorrelationVariables } from '../middleware/correlation.ts'
 
-import { err, internalServerError } from '../response/index.ts'
+import { err, internalServerError } from '@platform/backend/response/index.ts'
 
 /**
  * Context variables available throughout the request lifecycle.
@@ -241,7 +241,7 @@ export function createApp(
     if (_err instanceof HTTPException) {
       const status = _err.status
       logger.error('HTTP exception', { status, message: _err.message })
-      
+
       const [error, actualStatus, headers] = err(status, c.req.path, _err.message)
       return c.json(error, actualStatus, headers)
     }

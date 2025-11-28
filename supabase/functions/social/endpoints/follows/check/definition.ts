@@ -9,10 +9,10 @@
  * the full follow including `id` and `preferences` for subsequent operations.
  */
 
-import type { EndpointDefinition } from '@platform/backend/server/types.ts'
+import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseQuerySchema } from '@platform/backend/server/schemas.ts'
+import { BaseQuerySchema } from '#shared/server/schemas.ts'
 import { FollowPreferencesSchema } from '../../../utils/_schemas.ts'
 import { z } from 'zod'
 

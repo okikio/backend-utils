@@ -3,8 +3,8 @@
 import type { Context, MiddlewareHandler, Next } from 'hono'
 import type { Session, User } from '@supabase/supabase-js'
 
-import { createAdminClient, createUserClient } from '../supabase.ts'
-import { unauthorized } from '../response/index.ts'
+import { createAdminClient, createUserClient } from '#shared/supabase.ts'
+import { unauthorized } from '@platform/backend/response/index.ts'
 import { getLogger } from './correlation.ts'
 
 export type AuthUserVariables = {

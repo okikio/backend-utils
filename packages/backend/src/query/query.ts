@@ -26,7 +26,7 @@ import { createFiltersSchema } from './filtering.ts'
 import { createSortsSchema } from './sorting.ts'
 import { createFieldsSchema } from './fields.ts'
 
-import { BaseFormSchema, BaseJsonSchema, BaseQuerySchema } from '../server/schemas.ts'
+import { BaseFormSchema, BaseJsonSchema, BaseQuerySchema } from '../../../../supabase/functions/_shared/server/schemas.ts'
 
 // Re-export QuerySpec type
 export { QuerySpecSchema, type QuerySpec } from './schemas.ts'

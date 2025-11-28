@@ -16,7 +16,7 @@ export * from './query.ts'
  * Example (Hono-like) handler usage
  *
  * import { createEndpoindQuerySpec } from '@platform/backend/query/schemas.ts'
- * import { createValidator } from '@platform/backend/middleware/validation.ts' // your existing middleware factory
+ * import { createValidator } from '#shared/middleware/validation.ts' // your existing middleware factory
  * 
  * import { executeListQuery } from '#shared/query/execution/supabase.ts'
  * import { paginate, gone, badRequest } from '@platform/backend/response/index.ts'

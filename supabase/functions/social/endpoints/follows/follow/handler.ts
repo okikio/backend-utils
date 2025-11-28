@@ -8,14 +8,14 @@
  * Applies type-specific default preferences if not provided.
  */
 
-import type { EndpointHandler, EndpointMiddlewareHandler, FunctionAppEnv } from '@platform/backend/server/types.ts'
+import type { EndpointHandler, EndpointMiddlewareHandler, FunctionAppEnv } from '#shared/server/types.ts'
 import type { Json } from '@platform/shared/types/index.ts'
 
-import { authUserMiddleware, type AuthUserVariables } from '@platform/backend/middleware/auth.ts'
-import { createValidator } from '@platform/backend/middleware/validation.ts'
+import { authUserMiddleware, type AuthUserVariables } from '#shared/middleware/auth.ts'
+import { createValidator } from '#shared/middleware/validation.ts'
 
 import { badRequest, conflict, created, internalServerError } from '@platform/backend/response/index.ts'
-import { getLogger } from '@platform/backend/middleware/correlation.ts'
+import { getLogger } from '#shared/middleware/correlation.ts'
 
 import {
   getDefaultPreferences,

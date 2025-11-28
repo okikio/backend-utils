@@ -1,7 +1,7 @@
 // endpoint/likes/unlike/definition.ts
 import { z } from 'zod'
-import type { EndpointDefinition } from '@platform/backend/server/types.ts'
-import { BaseQuerySchema, BaseParamSchema } from '@platform/backend/server/schemas.ts'
+import type { EndpointDefinition } from '#shared/server/types.ts'
+import { BaseQuerySchema, BaseParamSchema } from '#shared/server/schemas.ts'
 
 export const Route = '/likes/:target_id';
 export const ParamSchema = BaseParamSchema.extend({

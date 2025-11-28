@@ -13,10 +13,10 @@
  * If preferences not provided, type-appropriate defaults are applied.
  */
 
-import type { EndpointDefinition } from '@platform/backend/server/types.ts'
+import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseJsonSchema } from '@platform/backend/server/schemas.ts'
+import { BaseJsonSchema } from '#shared/server/schemas.ts'
 import { FollowPreferencesSchema, FollowItemSchema } from '../../../utils/_schemas.ts'
 import { z } from 'zod'
 

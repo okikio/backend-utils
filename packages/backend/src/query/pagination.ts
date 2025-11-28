@@ -18,7 +18,7 @@ import { z } from 'zod'
 import { createHmac } from 'node:crypto'
 import { Buffer } from 'node:buffer'
 
-import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema, ZStringOrStringArray } from '../server/schemas.ts'
+import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema, ZStringOrStringArray } from '../../../../supabase/functions/_shared/server/schemas.ts'
 import {
   PaginationNormalizedSchema,
   CursorDataSchema,

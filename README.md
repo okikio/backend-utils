@@ -272,7 +272,7 @@ supabase/functions/my-function/endpoints/my-endpoint/
 
 ```typescript
 import type { FilterRegistry } from '@platform/backend/query/schemas.ts'
-import type { EndpointDefinition } from '@platform/backend/server/types.ts'
+import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makePaginationResultSchema } from '@platform/backend/response/schemas.ts'
 import { createEndpointQuerySchema } from '@platform/backend/query/query.ts'
@@ -280,7 +280,7 @@ import { createEndpointQuerySchema } from '@platform/backend/query/query.ts'
 import { z } from 'zod'
 
 import { CURSOR_SECRET } from './_env.ts'
-import { BaseQuerySchema } from '@platform/backend/server/schemas.ts'
+import { BaseQuerySchema } from '#shared/server/schemas.ts'
 
 
 // 1. Declare which fields can be filtered and how
@@ -337,9 +337,9 @@ export default {
 ### handler.ts — Implementing the Logic
 
 ```typescript
-import type { EndpointHandler, EndpointMiddlewareHandler, FunctionAppEnv } from '@platform/backend/server/types.ts'
+import type { EndpointHandler, EndpointMiddlewareHandler, FunctionAppEnv } from '#shared/server/types.ts'
 
-import { createValidator } from '@platform/backend/middleware/validation.ts'
+import { createValidator } from '#shared/middleware/validation.ts'
 import { paginate } from '@platform/backend/response/index.ts'
 import Definition from './definition.ts'
 

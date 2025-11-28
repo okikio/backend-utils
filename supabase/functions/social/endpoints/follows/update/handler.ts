@@ -8,15 +8,15 @@
  * Notifications object is merged (not replaced) for partial updates.
  */
 
-import type { EndpointHandler, EndpointMiddlewareHandler, FunctionAppEnv } from '@platform/backend/server/types.ts'
+import type { EndpointHandler, EndpointMiddlewareHandler, FunctionAppEnv } from '#shared/server/types.ts'
 import type { FollowPreferences } from '../../../utils/_schemas.ts'
 import type { Json } from '@platform/shared/types/index.ts'
 
-import { authUserMiddleware, type AuthUserVariables } from '@platform/backend/middleware/auth.ts'
-import { createValidator } from '@platform/backend/middleware/validation.ts'
+import { authUserMiddleware, type AuthUserVariables } from '#shared/middleware/auth.ts'
+import { createValidator } from '#shared/middleware/validation.ts'
 
 import { ok, notFound, forbidden, internalServerError } from '@platform/backend/response/index.ts'
-import { getLogger } from '@platform/backend/middleware/correlation.ts'
+import { getLogger } from '#shared/middleware/correlation.ts'
 
 import { deepMergePreferences } from '../../../utils/_schemas.ts'
 

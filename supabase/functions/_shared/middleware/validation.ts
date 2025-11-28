@@ -4,14 +4,14 @@
 
 import type { StandardSchemaV1 } from '@standard-schema/spec'
 import type { MiddlewareHandler, ValidationTargets } from 'hono'
-import type { ValidationErrorDetail } from '../response/schemas.ts'
+import type { ValidationErrorDetail } from '@platform/backend/response/schemas.ts'
 
 import { sValidator } from '@hono/standard-validator'
 import { HTTPException } from 'hono/http-exception'
 import { ZodError } from 'zod'
 
 import { getLogger } from './correlation.ts'
-import { internalServerError, validationFailed } from '../response/index.ts'
+import { internalServerError, validationFailed } from '@platform/backend/response/index.ts'
 
 import { getDotPath } from '@standard-schema/utils'
 

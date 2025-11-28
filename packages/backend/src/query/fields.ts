@@ -13,7 +13,7 @@
 
 import { z } from 'zod'
 
-import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema } from '../server/schemas.ts'
+import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema } from '../../../../supabase/functions/_shared/server/schemas.ts'
 import {
   FieldSelectionNormalizedSchema,
   type FieldsConfig,

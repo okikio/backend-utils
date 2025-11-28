@@ -11,10 +11,10 @@
  * Only the specified keys are updated; unspecified keys remain unchanged.
  */
 
-import type { EndpointDefinition } from '@platform/backend/server/types.ts'
+import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseJsonSchema, BaseParamSchema } from '@platform/backend/server/schemas.ts'
+import { BaseJsonSchema, BaseParamSchema } from '#shared/server/schemas.ts'
 import { FollowPreferencesSchema, FollowItemSchema } from '../../../utils/_schemas.ts'
 import { z } from 'zod'
 

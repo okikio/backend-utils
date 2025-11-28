@@ -12,7 +12,7 @@
 
 import { z } from 'zod'
 
-import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema, ZStringOrStringArray } from '../server/schemas.ts'
+import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema, ZStringOrStringArray } from '../../../../supabase/functions/_shared/server/schemas.ts'
 import {
   SortsNormalizedSchema,
   type SortNormalized,
