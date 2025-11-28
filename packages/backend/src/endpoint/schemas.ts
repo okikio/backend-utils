@@ -1,6 +1,6 @@
 // schemas.ts
 import type { FormValue, ParsedFormValue } from 'hono/types';
-import type { EndpointDefinitionSchemas } from './types.ts';
+import type { EndpointDefinitionSchemas } from './definitions.ts';
 import { z } from 'zod';
 
 /**

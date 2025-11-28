@@ -280,7 +280,7 @@ import { createEndpointQuerySchema } from '@platform/backend/query/query.ts'
 import { z } from 'zod'
 
 import { CURSOR_SECRET } from './_env.ts'
-import { BaseQuerySchema } from '#shared/server/schemas.ts'
+import { BaseQuerySchema } from '#shared/endpoint/schemas.ts'
 
 
 // 1. Declare which fields can be filtered and how

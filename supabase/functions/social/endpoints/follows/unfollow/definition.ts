@@ -15,7 +15,7 @@
 import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseQuerySchema, BaseParamSchema } from '#shared/server/schemas.ts'
+import { BaseQuerySchema, BaseParamSchema } from '@platform/backend/endpoint/schemas.ts'
 import { z } from 'zod'
 
 // ============================================================================

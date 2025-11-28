@@ -1,7 +1,7 @@
 // endpoint/likes/check/definition.ts
 import type { EndpointDefinition } from '#shared/server/types.ts'
 
-import { BaseQuerySchema } from '#shared/server/schemas.ts'
+import { BaseQuerySchema } from '@platform/backend/endpoint/schemas.ts'
 import { z } from 'zod'
 
 export const QuerySchema = BaseQuerySchema.extend({

@@ -14,7 +14,7 @@
 import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseJsonSchema, BaseParamSchema } from '#shared/server/schemas.ts'
+import { BaseJsonSchema, BaseParamSchema } from '@platform/backend/endpoint/schemas.ts'
 import { FollowPreferencesSchema, FollowItemSchema } from '../../../utils/_schemas.ts'
 import { z } from 'zod'
 

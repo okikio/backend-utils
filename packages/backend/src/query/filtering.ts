@@ -132,7 +132,7 @@
 
 import { z } from 'zod'
 
-import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema } from '../../../../supabase/functions/_shared/server/schemas.ts'
+import { BaseQuerySchema, BaseJsonSchema, BaseFormSchema } from '../endpoint/schemas.ts'
 import {
   FiltersNormalizedSchema,
   type FilterNormalized,

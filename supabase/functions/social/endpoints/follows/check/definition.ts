@@ -12,7 +12,7 @@
 import type { EndpointDefinition } from '#shared/server/types.ts'
 
 import { makeSuccessResponseSchema } from '@platform/backend/response/schemas.ts'
-import { BaseQuerySchema } from '#shared/server/schemas.ts'
+import { BaseQuerySchema } from '@platform/backend/endpoint/schemas.ts'
 import { FollowPreferencesSchema } from '../../../utils/_schemas.ts'
 import { z } from 'zod'
 

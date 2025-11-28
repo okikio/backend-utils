@@ -5,7 +5,7 @@ import type { EndpointDefinition } from '#shared/server/types.ts'
 import { makePaginationResultSchema } from '@platform/backend/response/schemas.ts'
 import { createEndpointQuerySchema } from '@platform/backend/query/query.ts'
 
-import { BaseQuerySchema } from '#shared/server/schemas.ts'
+import { BaseQuerySchema } from '@platform/backend/endpoint/schemas.ts'
 import { CURSOR_SECRET } from './_env.ts'
 import { z } from 'zod'
 
