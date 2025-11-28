@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start:supabase": "supabase start && pnpm run:functions",
-    "info:supabase": "supabase start",
+    "info:supabase": "supabase status",
     "run:functions": "supabase functions serve --env-file .env.local",
     "db:types": "supabase gen types typescript --local > packages/shared/src/types/database.types.ts",
     "stop:supabase": "supabase stop"
