@@ -1,0 +1,30 @@
+{
+  "workspace": [
+    "./supabase/functions/*"
+  ],
+  "nodeModulesDir": "auto",
+  "imports": {
+    "@supabase/supabase-js": "jsr:@supabase/supabase-js@2",
+    "hono": "jsr:@hono/hono@4",
+    "zod": "jsr:@zod/zod@4",
+    "@standard-schema/spec": "jsr:@standard-schema/spec@1",
+    "@standard-schema/utils": "jsr:@standard-schema/utils@0",
+    "@hono/standard-validator": "jsr:@hono/standard-validator@0",
+    "hono-rate-limiter": "jsr:@hono-rate-limiter/hono-rate-limiter@0",
+    "@hono-rate-limiter/redis": "jsr:@hono-rate-limiter/redis@0",
+    "@hono/otel": "jsr:@hono/otel@1",
+    "#shared/": "./supabase/functions/_shared/",
+    "@platform/shared": "./packages/shared/src/",
+    "@platform/backend/": "./packages/backend/src/"
+  },
+  "compilerOptions": {
+    "lib": [
+      "deno.window"
+    ],
+    "strict": true
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  }
+}

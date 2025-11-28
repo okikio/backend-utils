@@ -1,0 +1,183 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "Backend Utils",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+	// =============================================================================
+	// VOLUME MOUNTS - Performance Optimization Strategy
+	// =============================================================================
+	// We use a named Docker volume for node_modules instead of bind-mounting from
+	// the host. This provides significant performance benefits:
+	//
+	// 1. FAST I/O: Docker volumes have native filesystem performance, while bind
+	//    mounts (especially on macOS/Windows) add significant overhead for the
+	//    thousands of small files in node_modules.
+	//
+	// 2. ISOLATION: Changes to node_modules in the container don't sync back to
+	//    host, preventing file-watching issues and conflicts between different
+	//    Node/OS versions.
+	//
+	// TRADE-OFF: node_modules persists in a Docker volume, so it survives container
+	// rebuilds but gets deleted if you remove the volume. This is actually desirable
+	// since it ensures clean installs when needed.
+	// =============================================================================
+	"mounts": [
+		"source=backend-utils-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"moby": true,
+			"azureDnsAutoDetection": true,
+			"installDockerBuildx": true,
+			"installDockerComposeSwitch": true,
+			"version": "latest",
+			"dockerDashComposeVersion": "v2"
+		},
+		// mise (formerly rtx) manages tool versions (Node, Python, pnpm, etc.)
+		// from mise.toml. This ensures everyone uses the same runtime versions.
+		"ghcr.io/devcontainers-extra/features/mise:1": {
+			"version": "latest"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.autopep8",
+				"ms-python.debugpy",
+				"ms-python.vscode-python-envs",
+				"ms-toolsai.jupyter",
+				"hverlin.mise-vscode",
+				"denoland.vscode-deno",
+				"vivaxy.vscode-conventional-commits",
+				"YoavBls.pretty-ts-errors",
+				"esbenp.prettier-vscode",
+				"bradlc.vscode-tailwindcss",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"varlock.env-spec-language"
+			],
+			"settings": {
+				"deno.enablePaths": [
+					"supabase/functions"
+				],
+				"deno.lint": true,
+				"deno.unstable": [
+					"bare-node-builtins",
+					"byonm",
+					"sloppy-imports",
+					"unsafe-proto",
+					"webgpu",
+					"broadcast-channel",
+					"worker-options",
+					"cron",
+					"kv",
+					"ffi",
+					"fs",
+					"http",
+					"net"
+				],
+				"python.defaultInterpreterPath": "${workspaceFolder}/.vscode/mise-tools/python",
+				"jupyter.widgetScriptSources": [
+					"jsdelivr.com",
+					"unpkg.com"
+				],
+				"[python]": {
+					"editor.defaultFormatter": "ms-python.autopep8"
+				},
+				"deno.path": "/home/vscode/.local/share/mise/shims/deno",
+				"mise.binPath": "/usr/local/bin/mise"
+			}
+		}
+	},
+	// =============================================================================
+	// onCreateCommand - Runs ONCE when container is first created
+	// =============================================================================
+	// This runs immediately after the container is created but BEFORE features are
+	// fully initialized. Use this only for setup that doesn't depend on installed
+	// features (like mise).
+	//
+	// LIFECYCLE ORDER:
+	// 1. Container created from base image
+	// 2. Features installed (mise, docker-in-docker, etc.)
+	// 3. onCreateCommand runs ← YOU ARE HERE
+	// 4. postCreateCommand runs
+	// 5. Container ready for use
+	// =============================================================================
+	"onCreateCommand": {
+		// Fix permissions on node_modules volume since it's owned by root initially.
+		// The || true ensures this doesn't fail if node_modules doesn't exist yet.
+		"chown": "sudo chown -R vscode:vscode ${containerWorkspaceFolder}/node_modules 2>/dev/null || true",
+		// =========================================================================
+		// PNPM STORE CONFIGURATION - Why we need this
+		// =========================================================================
+		// PROBLEM: pnpm uses hard links to share packages between its global store
+		// and node_modules. Hard links ONLY work within a single filesystem.
+		//
+		// In our setup:
+		// - Workspace: /workspaces/project (bind mount from host)
+		// - node_modules: /workspaces/project/node_modules (Docker volume)
+		// - Default pnpm store: ~/.local/share/pnpm/store (container filesystem)
+		//
+		// These are THREE DIFFERENT FILESYSTEMS! When pnpm tries to hard-link from
+		// the store to node_modules, it fails and falls back to COPYING files,
+		// which is:
+		// - Slow (~30s for every install)
+		// - Wastes disk space
+		// - Defeats the entire purpose of pnpm
+		//
+		// SOLUTION: Configure pnpm to use a store INSIDE the node_modules volume:
+		// - node_modules: /workspaces/project/node_modules (Docker volume)
+		// - pnpm store: /workspaces/project/node_modules/.pnpm-store (same volume!)
+		//
+		// Now they're on the SAME filesystem, so hard links work perfectly:
+		// - First install: ~30s (downloads packages)
+		// - Subsequent installs: ~2-3s (instant hard links)
+		// - Terminal pnpm install: ~2-3s (instant hard links)
+		//
+		// WHY NOT USE .pnpmrc?
+		// We can't set store-dir in .pnpmrc because that file is committed to the
+		// repo and affects EVERYONE:
+		// - Host developers would lose the global store benefit (can't share packages
+		//   between projects)
+		// - CI/CD caching would break (expects default store location)
+		// - Team members not using devcontainers would have degraded performance
+		//
+		// INSTEAD: We write to ~/.npmrc which is:
+		// - User-level config (only affects this container)
+		// - Not committed to git
+		// - Doesn't affect host developers
+		// - Doesn't affect CI/CD
+		// - Perfect for environment-specific overrides
+		// =========================================================================
+		"pnpm-config": "echo 'store-dir=node_modules/.pnpm-store' > ~/.npmrc"
+	},
+	// =============================================================================
+	// postCreateCommand - Runs AFTER features are fully initialized
+	// =============================================================================
+	// This runs after onCreateCommand and after all features (like mise) are fully
+	// available. Use this for any setup that depends on installed tools.
+	//
+	// We use a shell script for complex setup logic (Python, pnpm, etc.)
+	// =============================================================================
+	"postCreateCommand": [
+		"sh",
+		"-lc",
+		"sh .devcontainer/install-deps.sh"
+	],
+	// Update the user UID to match your local UID. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"updateRemoteUserUID": true,
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		3000,
+		9999,
+		54321,
+		54322,
+		54323,
+		54324
+	],
+	// Run as vscode user (non-root) for security
+	"remoteUser": "vscode"
+}

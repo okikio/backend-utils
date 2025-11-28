@@ -1,0 +1,36 @@
+# Default: let Git normalize text, but keep LF in the repo
+* text=auto
+
+# --- Shell / Docker / Unix tooling: MUST be LF ---
+
+# Shell scripts
+*.sh       text eol=lf
+*.bash     text eol=lf
+*.zsh      text eol=lf
+
+# Docker
+Dockerfile text eol=lf
+docker-compose*.yml text eol=lf
+docker-compose*.yaml text eol=lf
+
+# Git hooks, misc scripts
+*.hook     text eol=lf
+scripts/** text eol=lf
+
+# --- Optional: language-specific preferences (usually safe as LF) ---
+
+*.ts       text eol=lf
+*.tsx      text eol=lf
+*.js       text eol=lf
+*.jsx      text eol=lf
+*.mjs      text eol=lf
+*.cjs      text eol=lf
+*.json     text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.md       text eol=lf
+
+# If you have real Windows-native things (e.g. .bat), you *can* allow CRLF:
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+*.ps1      text eol=crlf

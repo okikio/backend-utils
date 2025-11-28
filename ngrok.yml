@@ -1,0 +1,5 @@
+version: "3"
+endpoints:
+  - name: backend
+    upstream:
+      url: 54321

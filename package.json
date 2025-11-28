@@ -1,0 +1,21 @@
+{
+  "name": "backend-utils-monorepo",
+  "private": true,
+  "scripts": {
+    "start:supabase": "supabase start && pnpm run:functions",
+    "info:supabase": "supabase start",
+    "run:functions": "supabase functions serve --env-file .env.local",
+    "db:types": "supabase gen types typescript --local > packages/shared/src/types/database.types.ts",
+    "stop:supabase": "supabase stop"
+  },
+  "devDependencies": {
+    "supabase": "^2.62.10",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "supabase"
+    ]
+  },
+  "packageManager": "pnpm@10.20.0"
+}
