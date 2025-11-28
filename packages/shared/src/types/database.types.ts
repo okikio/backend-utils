@@ -164,6 +164,7 @@ export type Database = {
           session_id: string | null
           updated_at: string | null
           user_id: string | null
+          version: number | null
         }
         Insert: {
           abandoned_at?: string | null
@@ -174,6 +175,7 @@ export type Database = {
           session_id?: string | null
           updated_at?: string | null
           user_id?: string | null
+          version?: number | null
         }
         Update: {
           abandoned_at?: string | null
@@ -184,6 +186,7 @@ export type Database = {
           session_id?: string | null
           updated_at?: string | null
           user_id?: string | null
+          version?: number | null
         }
         Relationships: []
       }
@@ -343,6 +346,13 @@ export type Database = {
             referencedRelation: "collections_with_counts"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "collection_history_collection_fk"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "user_collections"
+            referencedColumns: ["id"]
+          },
         ]
       }
       collection_items: {
@@ -399,6 +409,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "collection_items_collection_fk"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "user_collections"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "collection_items_entity_type_fk"
             columns: ["item_type_code"]
             isOneToOne: false
@@ -448,10 +465,10 @@ export type Database = {
           item_count: number | null
           like_count: number | null
           name: string
+          owner_id: string
           slug: string
           sort_order: string | null
           updated_at: string | null
-          user_id: string
           visibility_code: string
         }
         Insert: {
@@ -467,10 +484,10 @@ export type Database = {
           item_count?: number | null
           like_count?: number | null
           name: string
+          owner_id: string
           slug: string
           sort_order?: string | null
           updated_at?: string | null
-          user_id: string
           visibility_code?: string
         }
         Update: {
@@ -486,10 +503,10 @@ export type Database = {
           item_count?: number | null
           like_count?: number | null
           name?: string
+          owner_id?: string
           slug?: string
           sort_order?: string | null
           updated_at?: string | null
-          user_id?: string
           visibility_code?: string
         }
         Relationships: [
@@ -645,6 +662,7 @@ export type Database = {
           description: string | null
           display_name: string
           is_neptune_entity: boolean
+          ontology_class_iri: string | null
           sort_order: number
         }
         Insert: {
@@ -653,6 +671,7 @@ export type Database = {
           description?: string | null
           display_name: string
           is_neptune_entity?: boolean
+          ontology_class_iri?: string | null
           sort_order?: number
         }
         Update: {
@@ -661,6 +680,7 @@ export type Database = {
           description?: string | null
           display_name?: string
           is_neptune_entity?: boolean
+          ontology_class_iri?: string | null
           sort_order?: number
         }
         Relationships: []
@@ -907,19 +927,70 @@ export type Database = {
         }
         Relationships: []
       }
+      neptune_sync_cursors: {
+        Row: {
+          consecutive_errors: number | null
+          created_at: string | null
+          direction: string
+          entity_type: string
+          id: string
+          is_active: boolean | null
+          last_commit_num: number | null
+          last_error: string | null
+          last_synced_at: string | null
+          last_synced_uri: string | null
+          sync_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          consecutive_errors?: number | null
+          created_at?: string | null
+          direction: string
+          entity_type: string
+          id: string
+          is_active?: boolean | null
+          last_commit_num?: number | null
+          last_error?: string | null
+          last_synced_at?: string | null
+          last_synced_uri?: string | null
+          sync_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          consecutive_errors?: number | null
+          created_at?: string | null
+          direction?: string
+          entity_type?: string
+          id?: string
+          is_active?: boolean | null
+          last_commit_num?: number | null
+          last_error?: string | null
+          last_synced_at?: string | null
+          last_synced_uri?: string | null
+          sync_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       neptune_sync_events: {
         Row: {
           created_at: string | null
           direction: string
           entity_type: string
           entity_uri: string
+          error_code: string | null
           error_message: string | null
           id: string
+          idempotency_key: string | null
+          max_retries: number | null
+          neptune_commit_num: number | null
+          next_retry_at: string | null
           operation: string
           payload: Json | null
           postgres_id: string | null
           postgres_table: string | null
           retry_count: number | null
+          started_at: string | null
           sync_status: string | null
           synced_at: string | null
         }
@@ -928,13 +999,19 @@ export type Database = {
           direction: string
           entity_type: string
           entity_uri: string
+          error_code?: string | null
           error_message?: string | null
           id?: string
+          idempotency_key?: string | null
+          max_retries?: number | null
+          neptune_commit_num?: number | null
+          next_retry_at?: string | null
           operation: string
           payload?: Json | null
           postgres_id?: string | null
           postgres_table?: string | null
           retry_count?: number | null
+          started_at?: string | null
           sync_status?: string | null
           synced_at?: string | null
         }
@@ -943,13 +1020,19 @@ export type Database = {
           direction?: string
           entity_type?: string
           entity_uri?: string
+          error_code?: string | null
           error_message?: string | null
           id?: string
+          idempotency_key?: string | null
+          max_retries?: number | null
+          neptune_commit_num?: number | null
+          next_retry_at?: string | null
           operation?: string
           payload?: Json | null
           postgres_id?: string | null
           postgres_table?: string | null
           retry_count?: number | null
+          started_at?: string | null
           sync_status?: string | null
           synced_at?: string | null
         }
@@ -1165,10 +1248,12 @@ export type Database = {
       }
       orders: {
         Row: {
+          billing_address: Json | null
           cancellation_reason: string | null
           cancelled_at: string | null
           cart_id: string | null
           created_at: string | null
+          created_by_user_id: string | null
           currency: string | null
           delivered_at: string | null
           discount_cents: number | null
@@ -1191,13 +1276,17 @@ export type Database = {
           total_cents: number
           tracking_number: string | null
           updated_at: string | null
+          updated_by_user_id: string | null
           user_id: string
+          version: number | null
         }
         Insert: {
+          billing_address?: Json | null
           cancellation_reason?: string | null
           cancelled_at?: string | null
           cart_id?: string | null
           created_at?: string | null
+          created_by_user_id?: string | null
           currency?: string | null
           delivered_at?: string | null
           discount_cents?: number | null
@@ -1220,13 +1309,17 @@ export type Database = {
           total_cents: number
           tracking_number?: string | null
           updated_at?: string | null
+          updated_by_user_id?: string | null
           user_id: string
+          version?: number | null
         }
         Update: {
+          billing_address?: Json | null
           cancellation_reason?: string | null
           cancelled_at?: string | null
           cart_id?: string | null
           created_at?: string | null
+          created_by_user_id?: string | null
           currency?: string | null
           delivered_at?: string | null
           discount_cents?: number | null
@@ -1249,7 +1342,9 @@ export type Database = {
           total_cents?: number
           tracking_number?: string | null
           updated_at?: string | null
+          updated_by_user_id?: string | null
           user_id?: string
+          version?: number | null
         }
         Relationships: [
           {
@@ -1460,6 +1555,7 @@ export type Database = {
           featured_until: string | null
           format_code: string
           id: string
+          images: Json | null
           last_synced_from_neptune_at: string | null
           medium_code: string
           narrative_unit_uri: string | null
@@ -1491,6 +1587,7 @@ export type Database = {
           featured_until?: string | null
           format_code: string
           id?: string
+          images?: Json | null
           last_synced_from_neptune_at?: string | null
           medium_code: string
           narrative_unit_uri?: string | null
@@ -1522,6 +1619,7 @@ export type Database = {
           featured_until?: string | null
           format_code?: string
           id?: string
+          images?: Json | null
           last_synced_from_neptune_at?: string | null
           medium_code?: string
           narrative_unit_uri?: string | null
@@ -1732,6 +1830,7 @@ export type Database = {
           product_id: string
           quantity: number | null
           release_week: string
+          removed_at: string | null
           retailer_confirmed_at: string | null
           retailer_id: string | null
           sent_to_retailer_at: string | null
@@ -1749,6 +1848,7 @@ export type Database = {
           product_id: string
           quantity?: number | null
           release_week: string
+          removed_at?: string | null
           retailer_confirmed_at?: string | null
           retailer_id?: string | null
           sent_to_retailer_at?: string | null
@@ -1766,6 +1866,7 @@ export type Database = {
           product_id?: string
           quantity?: number | null
           release_week?: string
+          removed_at?: string | null
           retailer_confirmed_at?: string | null
           retailer_id?: string | null
           sent_to_retailer_at?: string | null
@@ -2373,25 +2474,31 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          muted_at: string | null
           preferences: Json | null
           target_id: string
           target_type_code: string
+          unfollowed_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string | null
           id?: string
+          muted_at?: string | null
           preferences?: Json | null
           target_id: string
           target_type_code: string
+          unfollowed_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string | null
           id?: string
+          muted_at?: string | null
           preferences?: Json | null
           target_id?: string
           target_type_code?: string
+          unfollowed_at?: string | null
           user_id?: string
         }
         Relationships: [
@@ -2422,6 +2529,7 @@ export type Database = {
           updated_at: string | null
           user_id: string
           user_rating: number | null
+          version: number | null
           wishlist_notes: string | null
           wishlist_priority: number | null
           wishlisted_at: string | null
@@ -2443,6 +2551,7 @@ export type Database = {
           updated_at?: string | null
           user_id: string
           user_rating?: number | null
+          version?: number | null
           wishlist_notes?: string | null
           wishlist_priority?: number | null
           wishlisted_at?: string | null
@@ -2464,6 +2573,7 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           user_rating?: number | null
+          version?: number | null
           wishlist_notes?: string | null
           wishlist_priority?: number | null
           wishlisted_at?: string | null
@@ -2536,10 +2646,10 @@ export type Database = {
           item_count: number | null
           like_count: number | null
           name: string | null
+          owner_id: string | null
           slug: string | null
           sort_order: string | null
           updated_at: string | null
-          user_id: string | null
           visibility_code: string | null
         }
         Insert: {
@@ -2555,10 +2665,10 @@ export type Database = {
           item_count?: number | null
           like_count?: number | null
           name?: string | null
+          owner_id?: string | null
           slug?: string | null
           sort_order?: string | null
           updated_at?: string | null
-          user_id?: string | null
           visibility_code?: string | null
         }
         Update: {
@@ -2574,10 +2684,10 @@ export type Database = {
           item_count?: number | null
           like_count?: number | null
           name?: string | null
+          owner_id?: string | null
           slug?: string | null
           sort_order?: string | null
           updated_at?: string | null
-          user_id?: string | null
           visibility_code?: string | null
         }
         Relationships: [
@@ -2660,10 +2770,12 @@ export type Database = {
       }
       active_orders_by_user: {
         Row: {
+          billing_address: Json | null
           cancellation_reason: string | null
           cancelled_at: string | null
           cart_id: string | null
           created_at: string | null
+          created_by_user_id: string | null
           currency: string | null
           delivered_at: string | null
           discount_cents: number | null
@@ -2688,7 +2800,9 @@ export type Database = {
           total_cents: number | null
           tracking_number: string | null
           updated_at: string | null
+          updated_by_user_id: string | null
           user_id: string | null
+          version: number | null
         }
         Relationships: [
           {
@@ -2760,6 +2874,7 @@ export type Database = {
           featured_until: string | null
           format_code: string | null
           id: string | null
+          images: Json | null
           last_synced_from_neptune_at: string | null
           medium_code: string | null
           narrative_unit_uri: string | null
@@ -2819,10 +2934,10 @@ export type Database = {
           item_count: number | null
           like_count: number | null
           name: string | null
+          owner_id: string | null
           slug: string | null
           sort_order: string | null
           updated_at: string | null
-          user_id: string | null
           visibility_code: string | null
         }
         Relationships: [
@@ -2892,6 +3007,118 @@ export type Database = {
           },
         ]
       }
+      neptune_sync_cursor_status: {
+        Row: {
+          consecutive_errors: number | null
+          direction: string | null
+          entity_type: string | null
+          id: string | null
+          is_active: boolean | null
+          last_commit_num: number | null
+          last_error: string | null
+          last_synced_at: string | null
+          sync_type: string | null
+        }
+        Insert: {
+          consecutive_errors?: number | null
+          direction?: string | null
+          entity_type?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          last_commit_num?: number | null
+          last_error?: string | null
+          last_synced_at?: string | null
+          sync_type?: string | null
+        }
+        Update: {
+          consecutive_errors?: number | null
+          direction?: string | null
+          entity_type?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          last_commit_num?: number | null
+          last_error?: string | null
+          last_synced_at?: string | null
+          sync_type?: string | null
+        }
+        Relationships: []
+      }
+      neptune_sync_pending_summary: {
+        Row: {
+          direction: string | null
+          entity_type: string | null
+          newest_pending: string | null
+          oldest_pending: string | null
+          pending_count: number | null
+        }
+        Relationships: []
+      }
+      neptune_sync_retryable: {
+        Row: {
+          created_at: string | null
+          direction: string | null
+          entity_type: string | null
+          entity_uri: string | null
+          error_code: string | null
+          error_message: string | null
+          id: string | null
+          idempotency_key: string | null
+          max_retries: number | null
+          neptune_commit_num: number | null
+          next_retry_at: string | null
+          operation: string | null
+          payload: Json | null
+          postgres_id: string | null
+          postgres_table: string | null
+          retry_count: number | null
+          started_at: string | null
+          sync_status: string | null
+          synced_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          direction?: string | null
+          entity_type?: string | null
+          entity_uri?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          id?: string | null
+          idempotency_key?: string | null
+          max_retries?: number | null
+          neptune_commit_num?: number | null
+          next_retry_at?: string | null
+          operation?: string | null
+          payload?: Json | null
+          postgres_id?: string | null
+          postgres_table?: string | null
+          retry_count?: number | null
+          started_at?: string | null
+          sync_status?: string | null
+          synced_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          direction?: string | null
+          entity_type?: string | null
+          entity_uri?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          id?: string | null
+          idempotency_key?: string | null
+          max_retries?: number | null
+          neptune_commit_num?: number | null
+          next_retry_at?: string | null
+          operation?: string | null
+          payload?: Json | null
+          postgres_id?: string | null
+          postgres_table?: string | null
+          retry_count?: number | null
+          started_at?: string | null
+          sync_status?: string | null
+          synced_at?: string | null
+        }
+        Relationships: []
+      }
       products_with_stats: {
         Row: {
           archived_at: string | null
@@ -2906,6 +3133,7 @@ export type Database = {
           featured_until: string | null
           format_code: string | null
           id: string | null
+          images: Json | null
           last_synced_from_neptune_at: string | null
           medium_code: string | null
           narrative_unit_uri: string | null
@@ -2952,6 +3180,39 @@ export type Database = {
           },
         ]
       }
+      user_collections: {
+        Row: {
+          collaboration_enabled_at: string | null
+          collection_type: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          deleted_at: string | null
+          deleted_by_user_id: string | null
+          description: string | null
+          follower_count: number | null
+          id: string | null
+          item_count: number | null
+          like_count: number | null
+          name: string | null
+          owner_avatar_url: string | null
+          owner_display_name: string | null
+          owner_id: string | null
+          owner_username: string | null
+          slug: string | null
+          sort_order: string | null
+          updated_at: string | null
+          visibility_code: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collections_visibility_fk"
+            columns: ["visibility_code"]
+            isOneToOne: false
+            referencedRelation: "collection_visibilities"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       user_owned_products: {
         Row: {
           archived_at: string | null
@@ -2964,6 +3225,7 @@ export type Database = {
           featured_until: string | null
           format_code: string | null
           id: string | null
+          images: Json | null
           last_synced_from_neptune_at: string | null
           medium_code: string | null
           narrative_unit_uri: string | null
@@ -3030,6 +3292,7 @@ export type Database = {
           featured_until: string | null
           format_code: string | null
           id: string | null
+          images: Json | null
           last_synced_from_neptune_at: string | null
           medium_code: string | null
           narrative_unit_uri: string | null
@@ -3080,10 +3343,72 @@ export type Database = {
       }
     }
     Functions: {
+      claim_neptune_sync_batch: {
+        Args: { p_batch_size?: number; p_direction?: string }
+        Returns: {
+          created_at: string | null
+          direction: string
+          entity_type: string
+          entity_uri: string
+          error_code: string | null
+          error_message: string | null
+          id: string
+          idempotency_key: string | null
+          max_retries: number | null
+          neptune_commit_num: number | null
+          next_retry_at: string | null
+          operation: string
+          payload: Json | null
+          postgres_id: string | null
+          postgres_table: string | null
+          retry_count: number | null
+          started_at: string | null
+          sync_status: string | null
+          synced_at: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "neptune_sync_events"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       cleanup_old_deleted_records: { Args: never; Returns: undefined }
+      complete_neptune_sync: {
+        Args: {
+          p_error_code?: string
+          p_error_message?: string
+          p_event_id: string
+          p_success: boolean
+        }
+        Returns: boolean
+      }
+      enqueue_neptune_sync: {
+        Args: {
+          p_direction: string
+          p_entity_type: string
+          p_entity_uri: string
+          p_neptune_commit_num?: number
+          p_operation: string
+          p_payload?: Json
+          p_postgres_id?: string
+          p_postgres_table?: string
+        }
+        Returns: string
+      }
       get_character_appearance_count: {
         Args: { p_character_uri: string; p_user_id: string }
         Returns: Json
+      }
+      get_neptune_sync_stats: {
+        Args: never
+        Returns: {
+          count: number
+          direction: string
+          newest_synced: string
+          oldest_pending: string
+          status: string
+        }[]
       }
       get_pull_list_week_spend: {
         Args: { p_release_week: string; p_user_id: string }
@@ -3095,7 +3420,27 @@ export type Database = {
         Returns: Json
       }
       release_expired_cart_reservations: { Args: never; Returns: undefined }
+      reset_failed_neptune_syncs: { Args: never; Returns: number }
       restore_collection: { Args: { collection_id: string }; Returns: boolean }
+      rls_can_view_activity: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
+      rls_can_view_collection: {
+        Args: { collection_id: string }
+        Returns: boolean
+      }
+      rls_can_view_profile: { Args: { profile_id: string }; Returns: boolean }
+      rls_is_following: { Args: { target_user_id: string }; Returns: boolean }
+      update_neptune_sync_cursor: {
+        Args: {
+          p_cursor_id: string
+          p_error?: string
+          p_last_commit_num?: number
+          p_last_synced_uri?: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
