@@ -4,10 +4,11 @@ import type { EndpointHandler, EndpointMiddlewareHandler, FunctionAppEnv } from 
 import { authUserMiddleware, type AuthUserVariables } from '#shared/middleware/auth.ts'
 import { createValidator } from '#shared/middleware/validation.ts'
 
-import { buildPaginationMeta, queryCollectionWithCount } from '@platform/backend/query/mod.ts'
 import { paginate, internalServerError, withMeta } from '@platform/backend/response/index.ts'
 import { getLogger } from '#shared/middleware/correlation.ts'
+import { buildPaginationMeta } from '@platform/backend/query/index.ts'
 
+import { queryCollectionWithCount } from '#shared/query/execution/supabase.ts'
 import { isErrorResponse } from '@platform/backend/response/errors.ts'
 import { CURSOR_SECRET } from './_env.ts'
 
